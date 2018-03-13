@@ -1,0 +1,60 @@
+<openerp>
+    <data>
+        <!-- Inherit quotation report (from module sale) -->
+        <template id="report_quotation_with_oat" inherit_id="sale.report_saleorder_document">
+        <!-- Finds the first table with as class table table-condensed and gives the ability to modify it.
+         This will add new th with value is OAT (including th)-->
+        <xpath expr="//table[@class='table table-condensed']//thead//tr//th[@groups='sale.group_discount_per_so_line']" position="after">
+            <th>OAT</th>
+        </xpath>
+        <xpath expr="//tbody[@class='sale_tbody']/tr/td[@groups='sale.group_discount_per_so_line']" position="after">
+            <td>
+                <span t-field="l.oat"/>
+            </td>
+        </xpath>
+        <xpath expr="//table[@class='table table-condensed']/tr" position="after">
+            <tr>
+                <td>Total OAT</td>
+                <td class="text-right">
+                    <span t-field="o.total_oat" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.pricelist_id.currency_id&quot;}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Total DPP</td>
+                <td class="text-right">
+                    <span t-field="o.total_dpp" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.pricelist_id.currency_id&quot;}"/>
+                </td>
+            </tr>
+        </xpath>
+        </template>
+
+
+        <!-- Inherit invoice report (from module account) -->
+        <template id="report_invoice_with_oat" inherit_id="account.report_invoice_document">
+        <!-- Finds the first table with as class table table-condensed and gives the ability to modify it.
+         This will add new th with value is OAT (including th)-->
+        <xpath expr="//table[@class='table table-condensed']/thead/tr/th[@groups='sale.group_discount_per_so_line']" position="after">
+            <th>OAT</th>
+        </xpath>
+        <xpath expr="//tbody[@class='invoice_tbody']/tr/td[@groups='sale.group_discount_per_so_line']" position="after">
+            <td>
+                <span t-field="l.oat"/>
+            </td>
+        </xpath>
+        <xpath expr="//table[@class='table table-condensed']/tr" position="replace">
+            <tr>
+                <td>Total OAT</td>
+                <td class="text-right">
+                    <span t-field="o.amount_total" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Total DPP</td>
+                <td class="text-right">
+                    <span t-field="o.amount_untaxed" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.pricelist_id.currency_id&quot;}"/>
+                </td>
+            </tr>
+        </xpath>
+        </template>
+    </data>
+</openerp>

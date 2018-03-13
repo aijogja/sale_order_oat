@@ -1,0 +1,18 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="account_invoice_view_inherit">
+            <field name="name">account.invoice.view.inherit1</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Invoice Lines']/field[@name='invoice_line']/tree[@string='Invoice Lines']/field[@name='discount']" position="after">
+                    <field name="oat"/>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="after">
+                    <field name="total_oat" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="total_dpp" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
