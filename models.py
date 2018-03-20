@@ -2,6 +2,11 @@
 
 from openerp import models, fields, api
 
+class AccountAnalyticAccount(models.Model):
+    _inherit = 'account.analytic.account'
+
+    oat = fields.Float(string='OAT (%)')
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
