@@ -2,11 +2,6 @@
 
 from openerp import models, fields, api
 
-class AccountAnalyticAccount(models.Model):
-    _inherit = 'account.analytic.account'
-
-    oat = fields.Float(string='OAT (%)')
-
 
 class AccountAnalyticAccount(models.Model):
     _inherit = 'account.analytic.account'
@@ -19,24 +14,29 @@ class SaleOrderLine(models.Model):
 
     oat = fields.Float(string='OAT (%)')
 
-    def _prepare_order_line_invoice_line(self, cr, uid, line, account_id=False, context=None):
-        ret_val = super(SaleOrderLine, self)._prepare_order_line_invoice_line(cr, uid, line, account_id=False, context=None)
+    def _prepare_order_line_invoice_line(
+            self, cr, uid, line, account_id=False, context=None):
+        ret_val = super(SaleOrderLine, self)._prepare_order_line_invoice_line(
+            cr, uid, line, account_id=False, context=None)
         if not line.invoiced:
             ret_val['oat'] = line.oat
         return ret_val
 
-    def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
+    def product_id_change(
+            self, cr, uid, ids, pricelist, product, qty=0,
             uom=False, qty_uos=0, uos=False, name='', partner_id=False,
             lang=False, update_tax=True, date_order=False, packaging=False,
             fiscal_position=False, flag=False, context=None):
         ret_val = super(SaleOrderLine, self).product_id_change(
             cr, uid, ids, pricelist, product, qty=qty,
-            uom=uom, qty_uos=qty_uos, uos=uos, name=name, partner_id=partner_id,
-            lang=lang, update_tax=update_tax, date_order=date_order, packaging=packaging,
+            uom=uom, qty_uos=qty_uos, uos=uos, name=name,
+            partner_id=partner_id, lang=lang, update_tax=update_tax,
+            date_order=date_order, packaging=packaging,
             fiscal_position=fiscal_position, flag=flag, context=context)
         if partner_id:
             contract_obj = self.pool.get('account.analytic.account')
-            contract_ids = contract_obj.search(cr, uid,
+            contract_ids = contract_obj.search(
+                cr, uid,
                 [
                     ['type', '=', 'contract'],
                     ['state', '=', 'open'],
@@ -140,6 +140,7 @@ class AccountInvoice(models.Model):
             total_oat += oat
             total_tax += tax
         # save data
-        self.amount_untaxed = sum(line.price_subtotal for line in self.invoice_line)
+        self.amount_untaxed = sum(
+            line.price_subtotal for line in self.invoice_line)
         self.amount_tax = total_tax
         self.amount_total = self.amount_untaxed + self.amount_tax + total_oat
