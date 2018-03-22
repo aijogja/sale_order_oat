@@ -1,0 +1,14 @@
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="account_analytic_account_view_inherit">
+            <field name="name">account.analytic.account.view.inherit1</field>
+            <field name="model">account.analytic.account</field>
+            <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='manager_id']" position="after">
+                    <field name="oat"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
