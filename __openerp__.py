@@ -27,6 +27,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'templates.xml',
+        'views/contract.xml',
         'views/sale_order_line.xml',
         'views/account_invoice_line.xml',
         'report/report_with_oat.xml',
