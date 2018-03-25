@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
+from openerp.exceptions import except_orm
+from datetime import date
 
 
 class AccountAnalyticAccount(models.Model):
@@ -40,12 +42,24 @@ class SaleOrderLine(models.Model):
                 [
                     ['type', '=', 'contract'],
                     ['state', '=', 'open'],
+                    ['date_start', '<=', date.today().strftime("%Y-%m-%d")],
+                    ['date', '>=', date.today().strftime("%Y-%m-%d")],
+                    ['oat', '!=', 0],
                     ['partner_id', '=', partner_id]
                 ],
                 context=context
             )
             contract = contract_obj.browse(cr, uid, contract_ids)
-        ret_val['value']['oat'] = contract.oat
+        try:
+            ret_val['value']['oat'] = contract.oat
+        except except_orm as e:
+            if e[0] == 'ValueError':
+                raise except_orm(
+                    'MultipleOAT',
+                    'You have multiple OAT contract'
+                )
+            else:
+                raise e
         return ret_val
 
 
