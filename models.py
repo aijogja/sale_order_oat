@@ -6,6 +6,9 @@ from datetime import date
 
 
 class AccountAnalyticAccount(models.Model):
+    """
+    Contract
+    """
     _inherit = 'account.analytic.account'
 
     oat = fields.Float(string='OAT (%)')
@@ -158,3 +161,25 @@ class AccountInvoice(models.Model):
             line.price_subtotal for line in self.invoice_line)
         self.amount_tax = total_tax
         self.amount_total = self.amount_untaxed + self.amount_tax + total_oat
+
+    @api.one
+    def check_oat(self):
+        contract = self.env['account.analytic.account'].search([
+            ('type', '=', 'contract'),
+            ('state', '=', 'open'),
+            ('date_start', '<=', date.today().strftime("%Y-%m-%d")),
+            ('date', '>=', date.today().strftime("%Y-%m-%d")),
+            ('oat', '!=', 0),
+            ('partner_id', '=', self.partner_id.id)
+        ])
+        try:
+            for line in self.invoice_line:
+                line.update({'oat': contract.oat})
+        except except_orm as e:
+            if e[0] == 'ValueError':
+                raise except_orm(
+                    'MultipleOAT',
+                    'You have multiple OAT contract'
+                )
+            else:
+                raise e

@@ -18,7 +18,7 @@
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.3',
+    'version': '0.4',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'sale', 'account_analytic_analysis'],
@@ -27,9 +27,9 @@
     'data': [
         # 'security/ir.model.access.csv',
         'templates.xml',
-        'views/contract.xml',
+        'views/account_analytic.xml',
+        'views/account_invoice.xml',
         'views/sale_order_line.xml',
-        'views/account_invoice_line.xml',
         'report/report_with_oat.xml',
     ],
     # only loaded in demonstration mode
