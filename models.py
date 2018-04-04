@@ -175,6 +175,9 @@ class AccountInvoice(models.Model):
         try:
             for line in self.invoice_line:
                 line.update({'oat': contract.oat})
+            for tax in self.tax_line:
+                tax.update({'base': self.total_dpp})
+                tax.update({'amount': self.amount_tax })
         except except_orm as e:
             if e[0] == 'ValueError':
                 raise except_orm(
