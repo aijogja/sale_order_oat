@@ -41,7 +41,6 @@ class SaleOrderLine(models.Model):
             partner_id=partner_id, lang=lang, update_tax=update_tax,
             date_order=date_order, packaging=packaging,
             fiscal_position=fiscal_position, flag=flag, context=context)
-        _logger.debug(ret_val)
         if partner_id:
             contract_obj = self.pool.get('account.analytic.account')
             contract_ids = contract_obj.search(
@@ -176,14 +175,12 @@ class AccountInvoice(models.Model):
             ('oat', '!=', 0),
             ('partner_id', '=', self.partner_id.id)
         ])
-        # _logger.debug(taxx)
         try:
             for line in self.invoice_line:
                 line.update({'oat': contract.oat})
             for tax in self.tax_line:
                 tax.update({'base': self.total_dpp})
                 tax.update({'amount': self.amount_tax })
-                # tax.update({'base': base_total})
         except except_orm as e:
             if e[0] == 'ValueError':
                 raise except_orm(
