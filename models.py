@@ -178,6 +178,8 @@ class AccountInvoice(models.Model):
             for tax in self.tax_line:
                 tax.update({'base': self.total_dpp})
                 tax.update({'amount': self.amount_tax })
+                tax.update({'base_amount': self.total_dpp})
+                tax.update({'tax_amount': self.amount_tax })
         except except_orm as e:
             if e[0] == 'ValueError':
                 raise except_orm(
@@ -186,3 +188,18 @@ class AccountInvoice(models.Model):
                 )
             else:
                 raise e
+
+
+class AccountInvoiceTax(models.Model):
+    _inherit = 'account.invoice.tax'
+
+    @api.v8
+    def compute(self, invoice):
+        ret_val = super(AccountInvoiceTax, self).compute(invoice)
+        if invoice.type in ('out_invoice'):
+            for t in ret_val.values():
+                t['base'] = invoice.total_dpp
+                t['amount'] = invoice.amount_tax
+                t['base_amount'] = invoice.total_dpp
+                t['tax_amount'] = invoice.amount_tax
+        return ret_val
