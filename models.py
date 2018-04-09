@@ -177,7 +177,7 @@ class AccountInvoice(models.Model):
                 line.update({'oat': contract.oat})
             for tax in self.tax_line:
                 tax.update({'base': self.total_dpp})
-                tax.update({'amount': self.amount_tax })
+                tax.update({'amount': self.amount_tax})
                 tax.update({'base_amount': self.total_dpp})
                 tax.update({'tax_amount': self.amount_tax })
         except except_orm as e:
@@ -188,7 +188,6 @@ class AccountInvoice(models.Model):
                 )
             else:
                 raise e
-
 
 class AccountInvoiceTax(models.Model):
     _inherit = 'account.invoice.tax'
