@@ -7,7 +7,12 @@
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
                 <button name="invoice_open" position="after">
-                    <button name="check_oat" type="object" string="Check OAT" attrs="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="check_oat" type="object" string="Check OAT" attrs="{'invisible':
+                            [
+                                ('state','!=','draft'),
+                                ('type','!=','out_invoice'),
+                            ]}
+                        "/>
                 </button>
             </field>
         </record>
