@@ -1,5 +1,21 @@
 <openerp>
     <data>
+        <template id="report.style" name="style">
+            <style type="text/css">
+                .any {
+                 margin:0px;
+                }
+
+                p {
+                margin-bottom:0px;
+                }
+                
+                .space {
+                margin-top:10px;
+                }
+                <!-- More of CUSTOM CSS here -->
+            </style>
+        </template>
         <!-- Inherit quotation report (from module sale) -->
         <template id="report_quotation_with_oat" inherit_id="sale.report_saleorder_document">
         <!-- Finds the first table with as class table table-condensed and gives the ability to modify it.
@@ -54,6 +70,25 @@
                     <span t-field="o.total_dpp" t-field-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: &quot;o.currency_id&quot;}"/>
                 </td>
             </tr>
+        </xpath>
+        <xpath expr="//div[@class='row']//div[@class='col-xs-6']" position="after">
+            <div class="col-xs-12" style="margin-top:100px;">
+              <div class='row'>
+                <div class='col-xs-4'>
+                  <strong>BANK / Banker</strong><br/>
+                  <p class="space" >Bank : BNI 46</p>
+                  <p >No : 2201114449</p>
+                  <p >AN : PT Pelindo Energi Logistik</p>
+                </div>
+                <div class="col-xs-3 col-xs-offset-5">
+                  <p class="text-uppercase" >AN : Direktur</p>
+                  <p class="text-uppercase" >PT Pelindo Logistik</p>
+                  <p class="text-uppercase" >Manager Komersial</p>
+                  <strong class="text-uppercase" style="line-height:10;">Agus Heru Cahyono</strong>
+                  <!-- <p t-field="o.user_id"/> -->
+                </div>
+              </div>
+            </div>
         </xpath>
         </template>
     </data>
