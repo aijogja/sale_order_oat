@@ -146,7 +146,11 @@ class AccountInvoice(models.Model):
         self.total_oat = total_oat
 
     @api.one
-    @api.depends('invoice_line.price_subtotal', 'invoice_line.oat', 'tax_line.amount')
+    @api.depends(
+        'invoice_line.price_subtotal',
+        'invoice_line.oat',
+        'tax_line.amount'
+    )
     def _compute_amount(self):
         # hitung total oat dan amount tax
         total_oat = 0
@@ -176,10 +180,12 @@ class AccountInvoice(models.Model):
             for line in self.invoice_line:
                 line.update({'oat': contract.oat})
             for tax in self.tax_line:
-                tax.update({'base': self.total_dpp})
-                tax.update({'amount': self.amount_tax})
-                tax.update({'base_amount': self.total_dpp})
-                tax.update({'tax_amount': self.amount_tax })
+                tax.update({
+                            'base': self.total_dpp,
+                            'amount': self.amount_tax,
+                            'base_amount': self.total_dpp,
+                            'tax_amount': self.amount_tax
+                            })
         except except_orm as e:
             if e[0] == 'ValueError':
                 raise except_orm(
@@ -188,6 +194,7 @@ class AccountInvoice(models.Model):
                 )
             else:
                 raise e
+
 
 class AccountInvoiceTax(models.Model):
     _inherit = 'account.invoice.tax'
